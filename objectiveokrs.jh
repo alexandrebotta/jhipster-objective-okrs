@@ -1,0 +1,83 @@
+
+
+enum TipoObjetivo {
+	EMPRESA,
+    TIME,
+    INDIVIDUAL
+}
+
+entity Ciclo {
+	nome String
+	inicio LocalDate,
+    fim LocaDate
+}
+
+entity Time {
+	nome String,
+}
+
+relationship OneToMany {
+    Time{usuarios required} to User
+}
+
+entity Objetivo {
+    titulo String,
+	descricao String,
+    inicio LocalDate,
+    fim LocalDate,
+    finalizacao String,
+    sucesso Boolean,
+}
+
+relationship ManyToOne {
+    Objetivo{tipo required} to TipoObjetivo
+}
+
+relationship ManyToMany {
+    Objetivo{responsaveis required} to User,
+	Objetivo{times required} to Time,
+}
+
+entity KeyResult {
+	titulo String,
+    descricao String,
+    valorInicial Double,
+    valorAtual Double,
+    valorAlvo Double,
+    link String,
+    confianca Integer
+}
+
+relationship ManyToOne {
+	KeyResult{ciclo required} to Ciclo,
+    KeyResult{objetivo required} to Objetivo
+}
+
+entity KeyResultValue {
+	data LocalDate,
+    observacao String,
+    valor Double
+}
+
+relationship ManyToOne {
+	KeyResultValue{keyResult required} to KeyResult
+}
+
+entity KeyResultConfianca {
+	data LocalDate,
+    observacao String,
+    confianca Integer
+}
+
+relationship ManyToOne {
+	KeyResultConfianca{keyResult required} to KeyResult
+}
+
+entity JiraIssue {
+	codigo String
+}
+
+relationship ManyToMany {
+	KeyResult{issues} to JiraIssue
+    Objetivo{issues} to JiraIssue
+}
